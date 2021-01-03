@@ -23,7 +23,12 @@ function App() {
   const onSubmit = useCallback(async (e) => {
     e.preventDefault()
     const formData = new FormData(e.target)
-    await api.post('/upload_file', formData)
+    try {
+      await api.post('/upload_file', formData)
+    } catch (err) {
+      const {code} = err?.response?.data
+      alert(code)
+    }
   }, [api])
 
   return (

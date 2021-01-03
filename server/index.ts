@@ -26,28 +26,24 @@ app.use(cors(corsOptions));
 app.use((err, req, res, next) => {
   // Check if the error is thrown from multer
   if (err instanceof MulterError) {
-    res.statusCode = 400;
-    res.send({ code: err.code });
+    res.sendStatus(400).send({ code: err.code })
   } else if (err) {
     // If it is not multer error then check if it is our custom error for FILE_MISSING
     if (err.message === "FILE_MISSING") {
-      res.statusCode = 400;
-      res.send({ code: "FILE_MISSING" });
+      res.sendStatus(400).send({ code: '파일 없음' })
     } else {
       //For any other errors set code as GENERIC_ERROR
-      res.statusCode = 500;
-      res.send({ code: "GENERIC_ERROR" });
+      res.sendStatus(500).send({ code: '서버 에러' })
     }
   }
 });
 
 app.post("/upload_file", upload.single("file"), (req, res) => {
   if (!req.file) {
-    throw Error("파일 없음");
-    return;
+    res.sendStatus(400).send({ code: '파일 없음' })
+  } else {
+    res.send({ status: 'success' })
   }
-
-  res.send({ status: 'success' })
 });
 
 const server = app.listen(8081, () => {

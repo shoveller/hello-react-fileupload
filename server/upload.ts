@@ -11,5 +11,22 @@ const storage = diskStorage({
 })
 
 export const upload = multer({
-  storage
+  storage,
+  // 서버사이드에서 파일 크기에 제약을 줄 수 있다.
+  limits: {
+    fileSize: 1024 * 1024,
+  },
+  // 서버사이드에서 파일 타입에 제약을 줄 수 있다.
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype == "image/png" ||
+      file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg"
+    ) {
+      cb(null, true)
+    } else {
+      cb(null, false)
+      return cb(new Error("INVALID_TYPE"))
+    }
+  },
 })
