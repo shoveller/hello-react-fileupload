@@ -16,7 +16,6 @@ function App() {
     total: 100,
   })
   const onUpload = useCallback((e: IProgressEvent) => {
-    debugger
     setProgress(e)
   }, [])
   const api = axiosApi(onUpload)
@@ -24,12 +23,7 @@ function App() {
   const onSubmit = useCallback(async (e) => {
     e.preventDefault()
     const formData = new FormData(e.target)
-    // formData.entries()의 반환값은 iterable이다
-    // 이것은 [key,value]이 엘리먼트인 이차원 배열인데
-    // Object.fromEntries를 사용해 객체로 바꿀 수 있다.
-    const data = Object.fromEntries(formData.entries())
-
-    await api.post('/upload_file', data)
+    await api.post('/upload_file', formData)
   }, [api])
 
   return (

@@ -8,7 +8,7 @@ export interface IProgressEvent {
 export const axiosApi = (onUploadProgress: (progressEvent: IProgressEvent) => void) => axios.create({
   baseURL: 'http://localhost:8081',
   headers: {
-    'Content-Type': 'multipart/form-data'
+    'Content-Type': 'multipart/form-data; boundary="Boundary'
   },
   method: 'post',
   onUploadProgress
